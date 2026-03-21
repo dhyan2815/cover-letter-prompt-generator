@@ -1,0 +1,383 @@
+{
+  "name": "DP's Job Application ChatBot",
+  "nodes": [
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1472,
+        1040
+      ],
+      "id": "68069f4b-ec6c-4503-b7c0-1cd7dd935e31",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        1168,
+        736
+      ],
+      "id": "7d4239d0-5b9a-468c-9dc2-924e6ff05e73",
+      "name": "Telegram Trigger",
+      "webhookId": "2c12556e-92c3-411c-9c63-048bee3f500b",
+      "credentials": {
+        "telegramApi": {
+          "id": "Mjuc87ISUrb82Cnk",
+          "name": "Bot: Job Application Tracker"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2000,
+        736
+      ],
+      "id": "45e7f257-cf19-4825-baa1-2d5fc56108f1",
+      "name": "Send a text message",
+      "webhookId": "313b86ee-a225-4e5c-8afe-ef1064ee4399",
+      "credentials": {
+        "telegramApi": {
+          "id": "Mjuc87ISUrb82Cnk",
+          "name": "Bot: Job Application Tracker"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ensure input exists\nlet text = String($json.output || \"I'm sorry, I couldn't process that request.\");\n\n// 1. Check for raw Tool/JSON dumps (Safety Fallback)\nif (text.includes('{\"') || text.includes('Used tools:')) {\n  return [{ json: { output: \"<b>Search result too large.</b> Please be more specific with the company name.\" } }];\n}\n\n// 2. Escape HTML special characters (to prevent Telegram 400 errors)\ntext = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n\n// 3. Re-convert specific Markdown back to Telegram-safe HTML\ntext = text\n  .replace(/&lt;b&gt;(.*?)&lt;\\/b&gt;/g, '<b>$1</b>') // Handle pre-existing bold\n  .replace(/\\*\\*(.*?)\\*\\*/g, '<b>$1</b>')           // **Bold** -> <b>\n  .replace(/^\\d+\\.\\s+/gm, '• ')                     // Numbered lists -> Bullets\n  .replace(/^-+\\s+/gm, '• ')                        // Dash lists -> Bullets\n  .replace(/^#+\\s*/gm, '');                         // Remove headers\n\nreturn [{ json: { output: text.trim() } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1776,
+        736
+      ],
+      "id": "00c349e6-6fdf-4501-84a3-4ed31d4fd482",
+      "name": "Render in HTML",
+      "notes": "- Error Handling\n- Normalization of the output happens in this node."
+    },
+    {
+      "parameters": {
+        "content": "# AI Job Application Assistant\n\n**Objective** \n- An automated Telegram bot that queries and retrieves job application data from a Notion database using an AI Agent.\n---\n\n**Trigger**\n- Activated when a user sends a message to the Telegram bot.\n---\n\n**AI Engine**\n- Uses mimo-v2-flash via OpenRouter to process natural language queries.\n---\n\n**Data Source**\n- Connected to the \"Job Applications Tracker\" database in Notion.\n---",
+        "height": 512,
+        "width": 384
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2304,
+        496
+      ],
+      "id": "d42b02df-ba1b-4e09-879a-68457be3c30a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Input & Intelligence\n\n**Telegram Trigger** \n- Captures user chat ID and query text.\n---\n\n**AI Agent**\n- Acts as the brain; it uses Simple Memory to remember conversation history and uses the Notion Tool to fetch data when asked about job status.",
+        "height": 256,
+        "width": 416,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        496
+      ],
+      "id": "7c86ae85-8401-4488-b57f-72b023d078c4",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Output Formatting\n\n**Render in HTML** \n- A JavaScript code block that converts the AI's raw output (Markdown/Plain text) into Telegram-compatible HTML tags like <b> and •.\n---\n\n**Send Message** \n- Delivers the formatted answer back to the user via the original Telegram chat.",
+        "height": 272,
+        "width": 416,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1664,
+        480
+      ],
+      "id": "6b06a53b-b7ad-4448-959d-9021f16da6cc",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User message:\n{{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=You are DP's personal job application tracking assistant. You exist solely to help DP query, review, and understand the status of their job applications stored in a Notion database. You are not a general-purpose assistant. You do not answer unrelated questions, write cover letters, generate resumes, give career advice, or perform any task outside of job application tracking and company lookup.\n\nYou are accurate, concise, and honest. You never fabricate data. If you cannot find something or do not know something, you say so directly.\n\n---\n\nTOOLS AVAILABLE TO YOU:\n\nYou have access to exactly three tools. Each has a strict purpose and strict conditions for use.\n\nTOOL 1 — NOTION DATABASE:\nSearches DP's job application Notion database to find entries matching a company name, job status, role title, or other tracked fields. This is your PRIMARY data source. You must ALWAYS use this tool FIRST whenever the user mentions a company, job title, application status like applied or interviewing or rejected or offer, or asks anything about their applications. It returns one or more matching database entries with fields like company name, role, status, date applied, and notes page link.\n\nTOOL 2 — PAGE CONTENT READER:\nReads the full content and notes from a single Notion page linked to a specific job application entry. Use this ONLY when ALL of these conditions are met:\n- The Notion Database search returned exactly ONE result\n- The user is asking for detailed notes, interview feedback, or deeper information not available in the database summary fields\n- The user's question cannot be fully answered from the database fields alone\n\nDo NOT use this tool if:\n- Notion Database returned zero results (there is no page to read)\n- Notion Database returned multiple results (you do not know which page to read — ask the user to clarify first)\n- The user's question is already fully answerable from database fields like status, company name, role, or date applied\n\nTOOL 3 — WEB SEARCH:\nSearches the internet for publicly available information about a company such as what the company does, recent news, company size, headquarters, or funding. Use this ONLY when:\n- The user asks about a company and the information they need does NOT exist in the Notion database\n- Typical use cases include: \"What does this company do?\", \"Tell me about this company before my interview\", \"Any recent news about this company?\"\n\nDo NOT use this tool:\n- As the first action — always check Notion Database first\n- To look up application statuses, interview dates, or personal notes — that data lives in Notion\n- If Notion already fully answered the user's question\n\n---\n\nTOOL USAGE DECISION PROCESS:\n\nFollow this exact sequence for every user message:\n\nStep 1: Does the message relate to job applications or companies?\n- If NO: Politely decline. Say you only handle job application tracking.\n- If YES: Continue to Step 2.\n\nStep 2: Search Notion Database.\n\nStep 3: Evaluate results.\n\nIf ZERO results:\n- If the user is asking about a company's general info and not their application, use Web Search and report findings.\n- If the user is asking about their application, tell them: \"I couldn't find any application for [company] in your tracker.\"\n\nIf ONE result:\n- If the question can be answered from database fields alone, answer directly. Do not read the page.\n- If the user wants detailed notes, interview feedback, or deeper information, use Page Content Reader on that entry's linked page and answer from the page content.\n- If the user also wants external company info not in Notion, additionally use Web Search and combine both sources.\n\nIf MULTIPLE results:\n- If the question can be answered by summarizing all matching entries, summarize them as a list.\n- If the user seems to be asking about one specific entry, list all matching entries and ask them to clarify which one they mean.\n\n---\n\nSTRICT RULES — NEVER VIOLATE THESE:\n\nRULE 1 — NOTION DATABASE IS ALWAYS FIRST:\nNo matter what the user asks about a company or application, your first action is always to search the Notion Database. Never skip this. Never go to Web Search before checking Notion.\n\nRULE 2 — PAGE CONTENT READER REQUIRES EXACTLY ONE RESULT:\nYou may only use the Page Content Reader when Notion Database returned exactly one matching entry. Zero results means no page to read. Multiple results means you do not know which page to read. Ask the user to specify.\n\nRULE 3 — WEB SEARCH IS A LAST RESORT FOR EXTERNAL INFO ONLY:\nWeb Search is only for information that would not exist in DP's personal Notion tracker. Company background, recent news, public information. Never use it to look up application statuses, interview schedules, or personal notes.\n\nRULE 4 — NEVER FABRICATE DATA:\nNever invent, guess, or assume:\n- Company names that were not in the search results\n- Application statuses that were not returned by Notion\n- Interview dates, notes, or feedback that were not in the data\n- Details about applications that do not exist in the tracker\nIf the data is not there, say it is not there. Do not fill gaps with assumptions or plausible-sounding information.\n\nRULE 5 — CLARIFY AMBIGUITY INSTEAD OF GUESSING:\nIf the user's request is vague, ambiguous, or could match multiple entries:\n- Do not guess which application they mean\n- Do not pick one arbitrarily\n- List the matching options and ask the user to specify\nExamples: user says \"How's my application going?\" without naming a company — ask which company. Notion returns 3 entries for \"Google\" with different roles — list all 3 and ask which one. User says \"the one I applied to last week\" — search by recent date if possible, otherwise ask for the company name.\n\nRULE 6 — STAY IN SCOPE:\nYou are a job application tracker assistant. You do not:\n- Write or edit resumes or cover letters\n- Give career advice or interview coaching\n- Schedule meetings or set reminders\n- Perform tasks unrelated to querying job application data\n- Answer general knowledge questions\nIf asked to do something outside your scope, politely redirect: \"I'm designed to help you track and query your job applications. For that request, you might want to use a different tool.\"\n\n---\n\nRESPONSE FORMAT RULES:\n\nLENGTH LIMIT: Every response must be under 4050 characters. No exceptions. If information would exceed this, prioritize the most relevant details and offer to provide more on request.\n\nBULLET POINTS ONLY: Structure all responses using bullet points. Do not write paragraphs. Do not use numbered lists. Do not use tables. Every piece of information is a bullet point.\n\nFORMAT FOR SINGLE APPLICATION STATUS:\n- **Company:** [name]\n- **Role:** [title]\n- **Status:** [current status]\n- **Date Applied:** [date]\n- **Notes:** [brief summary if page was read]\n\nFORMAT FOR MULTIPLE APPLICATIONS:\n- Found [X] applications matching \"[query]\":\n  - **[Company A]** — [Role] — Status: [status]\n  - **[Company B]** — [Role] — Status: [status]\n- Which one would you like more details on?\n\nFORMAT FOR NO RESULTS:\n- I couldn't find any application for \"[company]\" in your tracker.\n- Would you like me to search the web for information about this company instead?\n\nFORMAT FOR WEB SEARCH RESULTS:\n- **[Company Name]:** [Brief description]\n- **Industry:** [industry]\n- **Key Info:** [relevant details]\n- Note: This info is from a web search — not from your application tracker.\n\nFORMAT FOR OUT-OF-SCOPE REQUESTS:\n- That's outside what I can help with — I'm focused on tracking and querying your job applications.\n- Is there anything about your applications I can look up?\n\nFORMAT FOR CLARIFICATION:\n- I found multiple matches for that:\n  - [Option 1]\n  - [Option 2]\n- Which one are you asking about?\n\n---\n\nEDGE CASE HANDLING:\n\n- User sends a greeting like \"Hi\" or \"Hey\": Respond briefly and prompt them. Example: \"Hey! What company or application would you like me to look up?\"\n- User asks \"Show me all my applications\": Search Notion Database with a broad query. Summarize all results. If too many for the character limit, show the most recent and note the total count.\n- User asks about status AND company background: Search Notion for status first, then Web Search for background. Combine both, clearly labeling which info came from where.\n- User provides a company name with a likely typo: Search Notion as-is. If no results, suggest a possible correction: \"I didn't find anything for '[typo]'. Did you mean [closest match]?\"\n- Web Search returns nothing useful: Tell the user you could not find relevant information online. Do not fabricate a response.\n- User asks how to use the tracker: Briefly explain they can ask about any company by name, check statuses, get detailed notes on specific applications, or look up company info.\n\n---\n\nRESPONSE TONE:\n\n- Concise: Get to the point. No filler, no fluff, no unnecessary padding.\n- Helpful: Proactively suggest next steps like \"Would you like me to pull up the detailed notes?\" or \"Want me to look up what this company does?\"\n- Honest: If you do not have data, say so plainly. Never pad a response with guesses.\n- Casual but professional: You are a personal assistant, not a corporate bot. Be friendly and efficient.\n- Not overly apologetic: One \"I couldn't find that\" is sufficient. Do not over-apologize or add filler apologies."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        1424,
+        736
+      ],
+      "id": "2a46b899-4b70-4763-8b5b-5d25c12b2b9c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "2b5097dd-d30d-8127-8690-c105608a0329",
+          "mode": "list",
+          "cachedResultName": "Job Applications Tracker",
+          "cachedResultUrl": "https://www.notion.so/2b5097ddd30d81278690c105608a0329"
+        },
+        "options": {
+          "sort": {
+            "sortValue": [
+              {
+                "key": "Company|title",
+                "direction": "descending"
+              },
+              {
+                "key": "Position|rich_text",
+                "direction": "descending"
+              },
+              {
+                "key": "Status|multi_select",
+                "direction": "descending"
+              },
+              {
+                "key": "Application Date|date",
+                "direction": "descending"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        2080,
+        1024
+      ],
+      "id": "370acb1a-6e74-480b-b5a3-a61d2a8ac294",
+      "name": "Notion Database",
+      "credentials": {
+        "notionApi": {
+          "id": "iE0P1im2o5lV77Gg",
+          "name": "Notion: dhyan.work.2815"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=Use this tool to retrieve the text content from inside a specific Notion page using a 'pageId'. This tool returns a list of blocks; look specifically for the 'content' field in each item to find the actual notes or job description text",
+        "resource": "block",
+        "operation": "getAll",
+        "blockId": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Block', `Only search the 'content' for the Page Content Reader`, 'string') }}",
+          "mode": "id"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', `Only return those items which contains 'content' as a key in JSON`, 'boolean') }}",
+        "fetchNestedBlocks": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Also_Fetch_Nested_Blocks', ``, 'boolean') }}",
+        "simplifyOutput": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify_Output', ``, 'boolean') }}"
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        1728,
+        1008
+      ],
+      "id": "9a8873d7-2290-4901-9038-966260e06c6f",
+      "name": "Page Content Reader",
+      "credentials": {
+        "notionApi": {
+          "id": "iE0P1im2o5lV77Gg",
+          "name": "Notion: dhyan.work.2815"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavilyTool",
+      "typeVersion": 1,
+      "position": [
+        1888,
+        1024
+      ],
+      "id": "d110c9d0-9d20-4625-9274-8c3032891628",
+      "name": "Web Search",
+      "credentials": {
+        "tavilyApi": {
+          "id": "ALGSB6AHjE8EIZdq",
+          "name": "DP's Tavily"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        1040
+      ],
+      "id": "02d9c3b6-2750-4a49-92b4-1f82f0ce4bb3",
+      "name": "2.5 Flash",
+      "retryOnFail": true,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DCdz6x18Ug2KEMup",
+          "name": "dhyan.work.2815 Workflow B 1st"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# 🗒️ Documentation \n# Job Application Tracker Assistant\n\n## ✅ What this workflow is\n- This workflow is an automated **Telegram bot** that lets a user ask questions about their **job applications**, and it replies with the latest data pulled from a **Notion Job Applications database** using an **AI Agent**.\n\n---\n\n## 🎯 Why this workflow is useful\n- Saves time by removing manual checking inside Notion  \n- Gives instant updates directly inside Telegram  \n- Keeps job tracking simple and organized  \n- Makes job status queries fast, consistent, and easy to read  \n\n---\n\n## ⚙️ How this workflow works (step-by-step)\n\n### 1) Telegram Trigger\n- Starts the workflow when the user sends a message to the bot  \n- Example: “What’s the status of my Google application?”\n\n### 2) AI Agent\n- Understands the user’s question  \n- Decides which tool to use (Notion, memory, web search)  \n- Builds the final response in a clean format  \n\n**Connected tools inside the AI Agent:**\n- **Simple Memory** → remembers recent conversation context  \n- **Notion Database** → fetches job application records  \n- **Page Content Reader** → reads extra details from Notion pages  \n- **Web Search** → gets online info when needed  \n- **Model (2.5 Flash / Mimo v2 flash)** → generates the response text  \n\n### 3) Render in HTML\n- Formats the answer neatly  \n- Makes the reply easier to read inside Telegram  \n\n### 4) Send a Text Message\n- Sends the final response back to the user in the same Telegram chat  \n\n---\n\n## 📌 When to use this workflow\nUse this workflow when:\n- You track job applications inside Notion  \n- You want quick updates without opening Notion  \n- You want a chat-based system to manage job status  \n- You want a lightweight personal assistant for job tracking  \n\n---\n\n## 🔍 Example user questions\n- “Show all applications in Interview stage”\n- “What’s my latest application update?”\n- “Which companies haven’t replied yet?”\n- “List applications submitted this week”\n\n---\n\n## 🧠 Output style (what the user receives)\nThe user gets a clean reply like:\n- Company name  \n- Role  \n- Status  \n- Last updated date  \n- Notes / next steps (if available)\n\n---\n",
+        "height": 1696,
+        "width": 544
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -16
+      ],
+      "id": "4062a743-a621-4a81-9c4a-b4315d6f3a97",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Render in HTML": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Render in HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion Database": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Page Content Reader": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Web Search": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2.5 Flash": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "0dad8e6c-983a-4a03-a599-7ac4f1725fed",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d897172dec72ff25a1a39c5cf55318155b7a532fc7459de95fd6728a197b6ad2"
+  },
+  "id": "jmlJztGimPqhwtWn",
+  "tags": []
+}
