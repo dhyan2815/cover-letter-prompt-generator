@@ -22,6 +22,8 @@ The primary goal of this repository is to serve as a personal knowledge base and
 - **Integration:** Explore seamless integrations between different AI services and development tools.
 - **Visualization:** Develop clear and effective methods for documenting complex systems.
 - **Design Consistency:** Create reusable brand design documentation that AI agents can reference.
+- **Memory:** Enable persistent context across sessions via Claude Code memory system.
+- **Standards:** Enforce consistent code quality through documented conventions.
 
 ## Project Structure
 
@@ -34,19 +36,57 @@ The primary goal of this repository is to serve as a personal knowledge base and
 │   ├── nike/DESIGN.md
 │   ├── notion/DESIGN.md
 │   └── ...
-├── docs/
+├── docs/                        # Project documentation
 │   └── superpowers/            # Agent superpowers & capabilities
 │       ├── plans/              # Implementation plans
 │       └── specs/             # Design specifications
-├── excalidraw diagrams/        # System architecture & workflow diagrams
-├── project markdowns/          # Documentation, plans, and guides
+├── visuals/                    # Excalidraw diagrams & workflow visuals
 ├── workflows/                  # n8n workflow definitions (JSON)
-├── .claude/                    # Claude Code configuration
-├── .opencode/                  # Open Code configuration
+├── memories/                   # Session memories & knowledge base
+├── content/                    # Content assets (carousels, templates)
+├── interfaces/                # Interface specifications
+├── claude structures/         # Claude Code structure guides
+├── .claude/                    # Claude Code knowledge base
+│   ├── memory/                 # Persistent memory system
+│   │   ├── decision_log.md    # Key decisions & rationale
+│   │   ├── issues_tracker.md  # Bug tracking
+│   │   ├── progress.md        # Project progress
+│   │   └── session_context.md # Current session context
+│   ├── docs/                   # Claude Code documentation
+│   │   ├── ARCHITECTURE.md     # System architecture
+│   │   ├── GLOSSARY.md         # Terminology
+│   │   └── QUICK_START.md     # Quick start guide
+│   ├── rules/                  # Coding standards
+│   │   ├── coding_standards.md # Multi-language standards
+│   │   └── naming_conventions.md # Naming patterns
+│   └── commands/              # Custom CLI commands
 ├── CLAUDE.md                   # Claude Code instructions
 ├── GEMINI.md                   # Gemini CLI instructions
 └── n8n_MCP_GUIDE.md           # n8n MCP integration guide
 ```
+
+## Memory System
+
+Claude Code maintains a persistent memory system in `.claude/memory/`:
+- **decision_log.md**: Records architectural decisions and their rationale
+- **issues_tracker.md**: Tracks bugs and technical debt
+- **progress.md**: Monitors project milestones and goals
+- **session_context.md**: Preserves context across sessions
+
+This enables long-term memory of project decisions and user preferences.
+
+## Documentation System
+
+The `.claude/docs/` directory contains Claude-specific documentation:
+- **ARCHITECTURE.md**: System design and component relationships
+- **GLOSSARY.md**: Terminology definitions
+- **QUICK_START.md**: Getting started guide for new contexts
+
+## Coding Standards
+
+Project-wide standards in `.claude/rules/`:
+- **coding_standards.md**: Universal principles + language-specific guides (Python, JS/TS, Go, Java, C)
+- **naming_conventions.md**: File, class, function, variable, database, and API naming patterns
 
 ## Design System
 
