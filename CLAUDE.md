@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## High‑Level Architecture
 The repository currently contains no source files. When code is added, consider documenting the following high‑level aspects here:
 - **Language / Runtime**: Indicate the primary language(s) (e.g., Python, JavaScript/TypeScript, Go) and any version requirements.
-- **Project Layout**: Describe the top-level directories. This project uses `workflows/`, `excalidraw diagrams/`, and `project markdowns/` instead of a traditional `src/` layout. Keep the description concise; the file tree can be inspected directly.
+- **Project Layout**: Describe the top-level directories. This project uses `workflows/`, `visuals/` (excalidraw diagrams), `memories/`, `content/`, `designs/`, `docs/`, and `.claude/` for knowledge base instead of a traditional `src/` layout. Keep the description concise; the file tree can be inspected directly.
 - **Core Components**: Identify the main logical components (e.g., API layer, data access layer, business logic, UI) and how they interact. Add a brief diagram if helpful.
 - **Dependency Management**: Mention the package manager (e.g., `pip`, `npm`, `go modules`) and where dependency files live (`requirements.txt`, `package.json`, `go.mod`).
 - **Configuration**: Note any environment‑variable based configuration or config files (e.g., `.env`, `config.yaml`).
@@ -26,6 +26,17 @@ The repository currently contains no source files. When code is added, consider 
 - The `MEMORY.md` file in that directory indexes all memory files.
 - At the start of each session, I will review `MEMORY.md` and relevant memories to get context.
 - Throughout the session, I will update these files with new information about the user, their preferences, project decisions, and other relevant context.
+
+## Documentation System
+- The `.claude/docs/` directory contains Claude-specific documentation:
+  - **ARCHITECTURE.md**: System design and component relationships
+  - **GLOSSARY.md**: Terminology definitions
+  - **QUICK_START.md**: Getting started guide
+
+## Coding Standards
+- `.claude/rules/` contains project-wide standards:
+  - **coding_standards.md**: Universal principles + language-specific guides (Python, JS/TS, Go, Java, C)
+  - **naming_conventions.md**: File, class, function, variable, database, and API naming patterns
 
 ## How Claude Should Use This File
 - Scan this file on startup to learn the available commands and high‑level structure.
