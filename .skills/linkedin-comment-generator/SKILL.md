@@ -59,6 +59,20 @@ Choose **one variant** based on post tone and intent. Generate **one comment onl
 - Best for: tactical, framework, or "lessons learned" posts
 - Example tone: *"This mirrors our hiring shift last year. Stopped optimizing for pedigree, started for ownership. Payoff was immediate."*
 
+### Variant 5 — Gentle Reframe / Devil's Advocate
+- Respectfully challenge the post's core premise from a different angle
+- Not a contradiction — a productive tension that invites the author to think further
+- No sycophancy, no preamble, no "but have you considered"
+- Best for: posts with broad generalizations, confident takes, or single-lens narratives
+- Example tone: *"Works until scale. At 200+ people the 'just hire great ones' logic starts to break."*
+
+### Variant 6 — Specific Callback / Data Point
+- Drop a precise number, named outcome, or concrete detail that validates or extends the post's claim
+- No emotional framing — pure specificity signals domain depth
+- Must feel like it comes from someone who has lived this, not read about it
+- Best for: data-backed posts, research references, metrics-driven takes, or industry-trend content
+- Example tone: *"We ran this exact switch in Q2. Cycle time dropped 40%. Same team, zero new hires."*
+
 ---
 
 ## Step 3: Apply Hard Constraints
