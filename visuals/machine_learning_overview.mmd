@@ -1,0 +1,22 @@
+flowchart TB
+    %% Styles with high contrast
+    classDef concept fill:#90EE90,stroke:#333,stroke-width:2px,color:darkgreen
+    classDef type fill:#87CEEB,stroke:#333,stroke-width:2px,color:darkblue
+    classDef example fill:#FFE4B5,stroke:#333,stroke-width:2px,color:darkorange
+
+    ML[🤖 Machine Learning]:::concept --> |"learns from data explicitly."| Types[📊 Types]:::concept
+    Types --> Supervised[📚 Supervised Learning]:::type
+    Types --> Unsupervised[🔍 Unsupervised Learning]:::type
+    Types --> Reinforcement[🎮 Reinforcement Learning]:::type
+
+    Supervised --> Ex1[📧 Spam Detection]:::example
+    Supervised --> Ex2[🏥 Disease Diagnosis]:::example
+    Supervised --> Ex3[💰 Price Prediction]:::example
+
+    Unsupervised --> Ex4[👥 Customer Segmentation]:::example
+    Unsupervised --> Ex5[📦 Anomaly Detection]:::example
+    Unsupervised --> Ex6[📉 Dimensionality Reduction]:::example
+
+    Reinforcement --> Ex7[🎮 Game AI]:::example
+    Reinforcement --> Ex8[🤖 Robot Navigation]:::example
+    Reinforcement --> Ex9[📈 Portfolio Optimization]:::example
