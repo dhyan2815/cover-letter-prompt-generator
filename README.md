@@ -25,53 +25,30 @@ The primary goal of this repository is to serve as a personal knowledge base and
 - **Memory:** Enable persistent context across sessions via Claude Code memory system.
 - **Standards:** Enforce consistent code quality through documented conventions.
 
-## Project Structure
+## Skills
+
+This repository includes specialized AI agent skills for various tasks. Each skill is designed to be invoked through the Claude Code Skill system.
+
+| Skill | Description | Use Case Example |
+|-------|-------------|-----------------|
+| **mcp-builder** | Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services. | Building integrations with external APIs like GitHub, Slack, or Notion. A developer creating a custom MCP server to let an AI agent manage GitHub issues and pull requests. |
+| **md-to-pdf-converter** | Converts Markdown (.md) files into professional, high-fidelity PDF reports with tables, formatting, and Unicode support. | Generating client deliverables, technical documentation, or policy documents from Markdown. Creating a polished PDF report from design specifications written in Markdown. |
+| **excalidraw-diagram-generator** | Generate Excalidraw diagrams from natural language descriptions. Supports flowcharts, mind maps, architecture diagrams, and more. | Visualizing system architecture, workflows, or conceptual diagrams. Creating a cloud architecture diagram for AWS/GCP deployment planning. |
+| **web-design-reviewer** | Visual inspection of websites to identify and fix design issues including responsive design, accessibility, and layout problems. | Auditing a landing page for mobile responsiveness, fixing alignment issues, or improving accessibility compliance. Reviewing a React app's UI and fixing CSS conflicts. |
+| **linkedin-profile-optimizer** | Audits and rewrites LinkedIn profiles using a strategist framework to maximize visibility, credibility, and conversions. | Job search optimization, personal branding for recruiters, or building professional thought leadership. Optimizing a senior engineer's profile to attract FAANG opportunities. |
+| **design-doc-mermaid** | Create Mermaid diagrams (activity, deployment, sequence, architecture) from text descriptions or source code. | Documenting API workflows, creating architecture diagrams, or generating technical documentation. Creating deployment diagrams for Kubernetes infrastructure. |
+| **writing-linkedin-posts** | Create engaging, authentic LinkedIn posts like a Top Voice. Focuses on thought leadership, authentic voice, and meaningful engagement. | Building personal brand, sharing industry insights, or establishing expertise. Writing a viral post about leadership lessons learned from a product launch. |
+| **linkedin-comment-generator** | Generate authentic, non-generic LinkedIn comments that spark real micro-conversations. Multiple tone variants for different post types. | Engaging with industry leaders, building network connections, or starting meaningful discussions. Commenting on a CTO's post about engineering culture with a thoughtful response. |
+
+### Invoking Skills
+
+To use a skill, invoke it through Claude Code's Skill tool:
 
 ```
-.
-├── designs/                      # Brand design documentation (DESIGN.md system)
-│   ├── DESIGN.md               # Guide explaining the DESIGN.md concept
-│   ├── apple/DESIGN.md         # Brand-specific design files
-│   ├── claude/DESIGN.md
-│   ├── nike/DESIGN.md
-│   ├── notion/DESIGN.md
-│   └── ...
-├── docs/                        # Project documentation
-│   └── superpowers/            # Agent superpowers & capabilities
-│       ├── plans/              # Implementation plans
-│       └── specs/             # Design specifications
-├── visuals/                    # Excalidraw diagrams & workflow visuals
-├── workflows/                  # n8n workflow definitions (JSON)
-├── memories/                   # Session memories & knowledge base
-├── content/                    # Content assets (carousels, templates)
-├── interfaces/                # Interface specifications
-├── claude structures/         # Claude Code structure guides
-├── .claude/                    # Claude Code knowledge base
-│   ├── memory/                 # Persistent memory system
-│   │   ├── decision_log.md    # Key decisions & rationale
-│   │   ├── issues_tracker.md  # Bug tracking
-│   │   ├── progress.md        # Project progress
-│   │   └── session_context.md # Current session context
-│   ├── docs/                   # Claude Code documentation
-│   │   ├── ARCHITECTURE.md     # System architecture
-│   │   ├── GLOSSARY.md         # Terminology
-│   │   └── QUICK_START.md     # Quick start guide
-│   ├── rules/                  # Coding standards
-│   │   ├── coding_standards.md # Multi-language standards
-│   │   └── naming_conventions.md # Naming patterns
-│   └── commands/              # Custom CLI commands
-├── CLAUDE.md                   # Claude Code instructions
-├── GEMINI.md                   # Gemini CLI instructions
-└── n8n_MCP_GUIDE.md           # n8n MCP integration guide
+/skill-name  (using slash command)
 ```
 
-## Memory System
-
-Claude Code maintains a persistent memory system in `.claude/memory/`:
-- **decision_log.md**: Records architectural decisions and their rationale
-- **issues_tracker.md**: Tracks bugs and technical debt
-- **progress.md**: Monitors project milestones and goals
-- **session_context.md**: Preserves context across sessions
+Or use the Skill tool directly with the skill name.
 
 This enables long-term memory of project decisions and user preferences.
 
