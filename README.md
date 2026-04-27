@@ -1,38 +1,52 @@
 # Agent Sandbox
 
-Experimental CLI tools & AI agents workspace. Tests capabilities of Claude Code, Gemini CLI, n8n, and integrations.
+> **Experimental CLI tools & AI agents workspace.** Tests capabilities of Claude Code, Gemini CLI, n8n, and integrations for content creation, automation, and AI-assisted development.
 
-## Focus Areas
+<p align="center">
+  <img src="https://img.shields.io/badge/Claude-Code-purple?style=flat-square&logo=anthropic" alt="Claude Code">
+  <img src="https://img.shields.io/badge/Gemini-CLI-blue?style=flat-square&logo=google" alt="Gemini CLI">
+  <img src="https://img.shields.io/badge/n8n-Workflow%20Automation-ff6e4c?style=flat-square&logo=n8n" alt="n8n">
+  <img src="https://img.shields.io/badge/Status-Experimental-orange?style=flat-square" alt="Status">
+</p>
 
-- **Claude Code** — Agentic AI for code generation, refactoring, automation
-- **Gemini CLI** — Workflow automation via Google Gemini models
-- **n8n** — Event-driven API/service automations
-- **Excalidraw** — Architecture & workflow diagrams
-- **DESIGN.md** — Brand-consistent UI generation
+## What is This?
 
-[→ See CLAUDE.md for commands & architecture](.claude/CLAUDE.md)
+A structured playground for experimenting with AI agents and CLI automation tools. Built for rapid prototyping, content generation, and workflow automation using modern agentic AI systems.
+
+### Core Focus Areas
+
+| Tool | Purpose | Docs |
+|------|---------|------|
+| **Claude Code** | Agentic AI for code generation, refactoring, automation | [CLAUDE.md](./CLAUDE.md) |
+| **Gemini CLI** | Workflow automation via Google Gemini models | [GEMINI.md](./GEMINI.md) |
+| **n8n** | Event-driven API/service automations | [`workflows/`](./workflows/) |
+| **Excalidraw** | Architecture & workflow diagrams | [`visuals/`](./visuals/) |
+| **DESIGN.md** | Brand-consistent UI generation system | [`designs/DESIGN.md`](./designs/DESIGN.md) |
 
 ---
 
-## Skills
+## Skills System
 
-> `/skill-name` or Claude Code Skill tool
+> Invoke via `/skill-name` or Claude Code Skill tool
+
+Skills are modular AI instruction sets stored in [`.skills/`](./.skills/). Each skill contains specialized workflows, prompts, and references for specific tasks.
 
 ### Content Creation
 
 | Skill | Function |
 |-------|----------|
 | `voice-builder` | Build personal voice profile from samples |
-| `post-writer` | Write in your voice (requires voice.md) |
+| `post-writer` | Write in your authentic voice (requires voice.md) |
 | `post-formatter` | Apply PAS/AIDA/STAR/SLAY frameworks |
 | `hook-generator` | 6 viral hook variations |
-| `post-scorer` | Score against your performance data |
-| `content-matrix` | 32 post ideas from pillars |
+| `post-scorer` | Score against performance data |
+| `content-matrix` | 32 post ideas from content pillars |
 | `graphic-designer` | HTML/CSS or AI-generated visuals |
 | `gemini-carousel` | LinkedIn carousels (1080×1350) |
 | `gemini-infographic` | Whiteboard-style images |
 | `quote-post` | Quote graphics + Gemini prompts |
 | `youtube-thumbnail` | CTR-optimized thumbnails |
+| `reels-scripting` | Reel scripts from reference content |
 
 ### LinkedIn Tools
 
@@ -44,42 +58,78 @@ Experimental CLI tools & AI agents workspace. Tests capabilities of Claude Code,
 | `analytics-dashboard` | Interactive performance dashboard |
 | `niche-research` | 20 trending stories (7 days) |
 
-### Newsletters
-
-| Skill | Function |
-|-------|----------|
-| `newsletter-voice` | Newsletter-specific style guide |
-| `profile-optimizer` | Full profile rebuild |
-
 ### Developer Tools
 
 | Skill | Function |
 |-------|----------|
-| `skills-mcp-builder` | Build MCP servers (Python/TS) |
-| `skills-md-to-pdf-converter` | Markdown → PDF |
+| `skills-mcp-builder` | Build MCP servers ([reference](https://modelcontextprotocol.io/)) |
+| `skills-md-to-pdf-converter` | Markdown → PDF reports |
 | `design-doc-mermaid` | Mermaid diagrams |
 | `excalidraw-diagram-generator` | Excalidraw diagrams |
-| `web-design-reviewer` | UI/UX audit & fixes |
-
-### Scripts & Templates
-
-| Skill | Function |
-|-------|----------|
-| `reels-scripting` | Reel scripts from reference |
-| `voice-builder` | Personal voice profile |
+| `web-design-reviewer` | UI/UX audit & automated fixes |
 
 ---
 
-## Documentation
+### Quick Links
 
-- `.claude/docs/` — Claude Code docs (ARCHITECTURE, GLOSSARY, QUICK_START)
-- `.claude/rules/` — coding_standards, naming_conventions
-- `designs/` — project DESIGN.md files
-
-[→ See .claude/memory/MEMORY.md for context](.claude/memory/MEMORY.md)
+| Resource | Location |
+|----------|----------|
+| Architecture Docs | [`.claude/docs/ARCHITECTURE.md`](./.claude/docs/) |
+| Coding Standards | [`.claude/rules/`](./.claude/rules/) |
+| Workflow Examples | [`workflows/`](./workflows/) |
+| Visual Diagrams | [`visuals/`](./visuals/) |
+| Brand Designs | [`designs/`](./designs/) |
 
 ---
 
-*Experimental. Not production-ready.*
+## Key Features
 
-[→ dhyan2815](https://github.com/dhyan2815)
+- **25+ Specialized Skills** — Content, LinkedIn, developer, and creative tools
+- **n8n Workflow Automation** — Telegram chatbots, document assistants, lead generation
+- **Brand Design System** — DESIGN.md templates for Apple, Vercel, Spotify, Nike, and more
+- **Visual Documentation** — Excalidraw diagrams for workflows and architecture
+- **Persistent Memory** — Cross-session context for Claude Code via `.claude/memory/`
+- **Learning Resources** — ML guides, prompts, and strategy documentation
+
+---
+
+## Architecture Highlights
+
+### DESIGN.md System
+
+Inspired by [Google Stitch's design language concept](https://github.com/VoltAgent/awesome-design-md), DESIGN.md files enable brand-consistent UI generation:
+
+> *"A document where an experienced designer explains a brand's visual language to a developer who's seeing it for the first time."*
+
+The system includes 9 standard sections: visual theme, color palette, typography, components, layout, depth, do's/don'ts, responsive behavior, and agent prompts.
+
+### Skill Structure
+
+Each skill follows a consistent pattern:
+- `SKILL.md` — Core instructions & workflows
+- `references/` — Examples, hooks, templates
+- Version tracking for iterations
+
+---
+
+## References & Credits
+
+| Resource | Link |
+|----------|------|
+| Claude Code | [claude.ai/code](https://claude.ai/code) |
+| Gemini CLI | [ai.google.dev/gemini-api/docs](https://ai.google.dev/gemini-api/docs) |
+| n8n | [n8n.io](https://n8n.io) |
+| MCP Protocol | [modelcontextprotocol.io](https://modelcontextprotocol.io) |
+| DESIGN.md Concept | [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) |
+| Excalidraw | [excalidraw.com](https://excalidraw.com) |
+
+---
+
+*Experimental playground. Not production-ready. Built for learning and rapid prototyping.*
+
+---
+
+<p align="center">
+  <a href="https://github.com/dhyan2815">GitHub</a> · 
+  <a href="https://linkedin.com/in/dhyan2815">LinkedIn</a>
+</p>
