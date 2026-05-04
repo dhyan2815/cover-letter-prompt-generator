@@ -1,19 +1,20 @@
 {
+  "hooks": {
+    "on_exit": "session-memory-updater"
+  },
   "permissions": {
     "allow": [
-      "Bash(make:*)",
-      "Bash(npm test:*)",
-      "Bash(npm run:*)",
-      "Bash(npm build:*)",
       "Read(**)",
       "Write(src/**)",
       "Write(test/**)",
       "Write(.claude/**)",
-      "Edit(src/**)",
-      "Edit(.claude/**)"
+      "Bash(make:*)",
+      "Bash(npm run:*)",
+      "Bash(npm test *)",
+      "Bash(npm run build *)"
     ],
     "deny": [
-      "Bash(rm -rf:*)"
+      "Bash(rm -rf *)"
     ]
   }
 }
